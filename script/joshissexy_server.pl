@@ -13,11 +13,11 @@ use Pod::Usage;
 use FindBin;
 use lib "$FindBin::Bin/../lib";
 
-my $debug             = 0;
-my $fork              = 0;
+my $debug             = 1;
+my $fork              = 1;
 my $help              = 0;
-my $host              = undef;
-my $port              = 3000;
+my $host              = '';
+my $port              = 3033;
 my $keepalive         = 0;
 my $restart           = 0;
 my $restart_delay     = 1;
