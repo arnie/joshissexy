@@ -3,14 +3,10 @@ package joshissexy::Model::joshissexyDB;
 use strict;
 use base 'Catalyst::Model::DBIC::Schema';
 
-__PACKAGE__->config(
+__PACKAGE__->config( 
     schema_class => 'joshissexyDB',
-    connect_info => [
-        '', # dbi:Pg:dbname=<dbname>
-        '',    # username
-        '', # password
-    ],
-);
+    connect_info => delete joshissexy->config->{connect_info},
+ );
 
 =head1 NAME
 

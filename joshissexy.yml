@@ -1,5 +1,9 @@
 ---
-name: joshissexy
+name: joshissexy_test
+connect_info: 
+    # - 'dbi:PG:dbname=<dbname>'
+    # - 'username'
+    # - 'password'
 authentication:
     dbic:
         user_class:         joshissexyDB::Users
@@ -13,3 +17,5 @@ authorization:
         role_field:             role
         role_rel:               map_user_role
         user_role_user_field:   user_id
+session:
+    storage:    /tmp/joshissexy_temp
