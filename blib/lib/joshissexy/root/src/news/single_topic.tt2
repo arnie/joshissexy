@@ -1,0 +1,6 @@
+    [% USE date %]
+    <div class="news_post">
+        <h2>[% news.topic %]</h2>
+        <span class="date">[% date.manip.UnixDate(news.create_date, "%Y %b %d %H:%M") %]</span>
+        <p class="message">[% news.message %]</p>
+    </div>

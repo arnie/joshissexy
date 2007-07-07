@@ -1,0 +1,7 @@
+[% META title='News' -%]
+
+[% FOREACH n IN news -%]
+    [% INCLUDE news/single_topic.tt2 news = n %]
+    <span class="comments"><a href="[% Catalyst.uri_for('/news/') _ n.news_id %]">Comments([% n.get_column('comments_count') %])</a></span>
+[% END -%]
+<p>[% INCLUDE general/pagination.tt2 page = news_page prefix = 'page/' %]</p>

@@ -1,0 +1,7 @@
+[% META title = 'Login' %]
+
+<ul>
+[% FOR role = Catalyst.user.roles %]<li>[% role %]</li>[% END %]
+</ul>
+
+[% login_form.as_xml %]

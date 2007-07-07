@@ -1,0 +1,9 @@
+[% META title = 'Create Post' -%]
+
+<form method="post" action="[% Catalyst.uri_for('create_news') %]">
+	<table>
+		<tr><td>Title:</td><td><input type="text" name="topic" /></td></tr>
+		<tr><td>Message:</td><td><textarea name="message" cols="100" rows="10"></textarea></td></tr>
+	</table>
+	<input type="submit" name="submit" value="Submit">
+</form>

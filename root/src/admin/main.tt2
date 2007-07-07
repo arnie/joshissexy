@@ -1,0 +1,5 @@
+<ul>
+[% FOREACH link IN links -%]
+	<li><a href="[% link.url %]">[% link.title %]</a></li>
+[% END %]
+</ul>

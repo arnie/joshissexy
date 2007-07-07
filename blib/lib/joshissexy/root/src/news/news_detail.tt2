@@ -1,0 +1,28 @@
+[% META title = 'News' %]
+[% USE date %]
+
+[% INCLUDE news/single_topic.tt2 news = news %]
+
+<h3>Comments</h3>
+
+[%- IF !news.comments -%]
+    (No comments)
+[%- END -%]
+
+[%- FOREACH comment IN news.comments %]
+    <div class="comment"[% IF loop.count % 2 == 1%] style="background-color: #FFF"[% END %]>
+        <span class="name">
+    [%- IF comment.email -%]
+        <a href="mailto:[% comment.email %]">[% comment.name %]</a>
+    [%- ELSE -%]
+        [% comment.name %]
+    [%- END -%]
+        </span>
+        <span class="date">[% date.manip.UnixDate(comment.create_date, "%Y %b %d %H:%M") %]</span>
+        <p>[% comment.message %]</p>
+    </div>
+[%- END %]
+
+<h3>Add Comment</h3>
+
+[% add_comment_form.as_xml -%]

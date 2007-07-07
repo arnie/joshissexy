@@ -1,0 +1,15 @@
+---
+name: joshissexy
+authentication:
+    dbic:
+        user_class:         joshissexyDB::Users
+        user_field:         username
+        password_field:     password
+        password_type:      hashed
+        password_hash_type: SHA-1
+authorization:
+    dbic:
+        role_class:             joshissexyDB::Roles
+        role_field:             role
+        role_rel:               map_user_role
+        user_role_user_field:   user_id

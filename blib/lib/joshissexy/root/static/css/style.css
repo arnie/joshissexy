@@ -1,0 +1,102 @@
+body {
+    background: #FFF url('/static/images/background.png') repeat-x top left;
+    font: 74% Arial, Sans-Serif;
+}
+
+h1.title {
+    position: relative;
+    top: 78px;
+}
+
+#container {
+    width: 750px;
+    border: 1px solid black;
+    margin-left: 225px;
+    background-color: #EEE;
+    padding: 15px;
+}
+
+#footer {
+    border-top: 1px solid black;
+    text-align: center;
+    padding-top: 7px;
+    margin-top: 7px;
+    font-size: 8pt;
+}
+
+#header {
+    height: 170px;
+}
+
+.error {
+    color: #F00;
+}
+
+.message {
+    color: #00F;
+}
+
+/* NEWS */
+.news_post {
+    padding: 10px 0px 10px 0px;
+}
+
+#content h2,#content h3 {
+    display: block;
+    font-size: 12pt;
+    font-weight: bold;
+    color: #e79910;
+    margin-bottom: 0;
+}
+
+.news_post .date,.comment .date {
+    color: #4d75cf;
+    font-size: 8pt;
+}
+
+.news_post .message {
+    display: block;
+}
+
+.comment {
+    padding: 10px;
+}
+
+.comment .name {
+    display: block;
+    font-size: 10pt;
+}
+
+
+/* FORM stuff */
+label {
+    display: block;
+    width: 10em;
+    position: relative;
+    margin: .5em 0em;
+}
+
+label input, label select {
+}
+
+.fields_with_errors > input{
+    background: #BCF;
+}
+
+.labels_with_errors textarea {
+    background: #BCF;
+
+}
+
+.submit {
+    display: block;
+    margin-top: 2em;;
+}
+
+.error_messages {
+    color: #F00;
+}
+
+.widget_fieldset {
+    border: none;
+}

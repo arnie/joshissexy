@@ -1,0 +1,19 @@
+abstract: Catalyst based application
+author: 'Josh Braegger, "arnie@geekahertz.org"'
+distribution_type: module
+generated_by: Module::Install version 0.63
+license: perl
+name: joshissexy
+no_index:
+  directory:
+    - inc
+    - t
+requires:
+  Catalyst: 5.7006
+  Catalyst::Action::RenderView: 0
+  Catalyst::Plugin::ConfigLoader: 0
+  Catalyst::Plugin::Static::Simple: 0
+  DBD::Pg: 0
+  DBIx::Class: 0
+  YAML: 0
+version: 0.01

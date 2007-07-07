@@ -1,0 +1,21 @@
+[% prefix = path _ prefix %]
+[% current_page = prefix _ page.current_page -%]
+[% last_page = prefix _ page.last_page -%]
+
+Page <a href="[% Catalyst.uri_for( current_page ) %]">
+[%- page.current_page -%]
+</a> of <a href="[% Catalyst.uri_for( last_page ) %]">
+[%- page.last_page -%]
+</a>
+
+(
+[% IF page.previous_page -%]
+    [% prev_page = prefix _ page.previous_page -%]
+    <a href="[% Catalyst.uri_for( prev_page ) %]">Prev</a>
+[%- END %]
+[% IF page.next_page -%]
+    [% next_page = prefix _ page.next_page -%]
+    <a href="[% Catalyst.uri_for( next_page ) %]">Next</a>
+[% END %]
+
+)

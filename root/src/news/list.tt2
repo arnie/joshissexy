@@ -1,0 +1,11 @@
+[% META title='News' -%]
+
+[% IF news_page.current_page == 1 -%]
+<img src="http://gallery.joshissexy.com/d/125-2/DSC_0018.jpg" border="1" alt="" style="float: right; margin: 5px;" />
+[%- END -%]
+
+[% FOREACH n IN news -%]
+    [% INCLUDE news/single_topic.tt2 news = n %]
+    <span class="comments"><a href="[% Catalyst.uri_for('/news/') _ n.news_id %]">Comments([% n.get_column('comments_count') %])</a></span>
+[% END -%]
+<p>[% INCLUDE general/pagination.tt2 page = news_page prefix = 'page/' %]</p>
