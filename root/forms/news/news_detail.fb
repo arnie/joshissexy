@@ -1,0 +1,27 @@
+name: comment_form
+method: post
+fields:
+    name:
+        label:    Name
+        type:     text
+        size:     25
+        required: 1
+        message:  Must be a valid name. eg John Doe
+    email:
+        label:    Email
+        type:     text
+        size:     25
+        required: 0
+        message:  Must be a valid email address. eg omg@iloveyou.com
+    message:
+        label:    Message
+        type:     textarea
+        cols:     50
+        rows:     6
+        required: 1
+
+validate:
+    name:  /^[a-zA-Z ]+$/
+    email: EMAIL
+
+submit: Submit

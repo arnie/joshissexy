@@ -18,11 +18,14 @@
         [% comment.name %]
     [%- END -%]
         </span>
-        <span class="date">[% date.manip.UnixDate(comment.create_date, "%Y %b %d %H:%M") %]</span>
+        <span class="date">[% date.manip.UnixDate(comment.create_date, "%Y %b %d %i:%M%p") %]</span>
         <p>[% comment.message %]</p>
     </div>
 [%- END %]
 
-<h3>Add Comment</h3>
+[% IF !form_submitted %]
 
-[% add_comment_form.as_xml -%]
+<h3>Add Comment</h3>
+[% INCLUDE general/form.tt2 form = formbuilder %]
+
+[% END %]

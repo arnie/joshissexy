@@ -1,6 +1,7 @@
 <div id="header">[% PROCESS site/header %]</div>
 
 <div id="navbar">[% PROCESS site/navbar %]</div>
+<div id="breadcrumb">[% breadcrumb %]</div>
 
 <div id="container">
 

@@ -1,0 +1,23 @@
+
+[% form.start %]
+<p>
+[% FOREACH field IN form.fields -%]
+	[% IF field.invalid -%]
+		<label class="invalid">[% field.label %][% IF field.required %]*[% END -%]
+        [% IF field.message -%]
+            <span class="invalid_message">([% field.message -%])</span>
+        [% END %]
+        </label>
+	[% ELSIF field.required -%]
+		<label class="required">[% field.label %]*</label>
+    [%- ELSE -%]
+		<label>[% field.label %]</label>
+    [%- END %]
+    [% field.field %]
+[% END -%]
+
+</p>
+<p>
+    [% form.submit %]
+</p>
+[% form.end %]

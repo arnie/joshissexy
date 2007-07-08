@@ -2,7 +2,7 @@ package joshissexy::Controller::News;
 
 use strict;
 use warnings;
-use base 'Catalyst::Controller';
+use base 'Catalyst::Controller::FormBuilder';
 use Data::Dumper;
 
 =head1 NAME
@@ -17,6 +17,75 @@ Catalyst Controller.
 
 =cut
 
+sub breadcrumb {
+    my ( $self, $c ) = @_;
+
+    my $url = $c->req->path;
+    my @t = split '/', $url;
+
+    my $titles = {
+        news => 'Home',
+        
+    };
+
+    my @breadcrumb;
+
+    while ( my $i = shift @t ) {
+
+        if ($i eq 'news') {
+            push @breadcrumb, ['Home', $c->uri_for('/news')];
+
+            while (my $i = shift @t) {
+                if ($i eq 'page') {
+                    my $page = shift @t;
+                    push @breadcrumb, ["News (page $page)", $c->uri_for("/news/page/$page")];
+                }
+                elsif ($i =~ /^(\d+)$/) {
+                    my $news = $c->model('joshissexyDB::News')->single({ news_id => $1});
+                    push @breadcrumb, [$news->topic, $c->uri_for("/news/$1")] if $news->topic;
+
+                    my $directives = {
+                        post_comment => ['Post Comment', $c->uri_for("/news/$1/post_comment")],
+                    };
+
+                    my $directive = $directives->{ shift @t };
+                    push @breadcrumb, $directive if $directive;
+
+                }
+                elsif ($i eq 'create_news') {
+                    push @breadcrumb, ['Admin', $c->uri_for("/admin")];
+                    push @breadcrumb, ['Create News', $c->uri_for("/news/create_news")];
+                }
+                elsif ($i eq 'delete_news') {
+                    push @breadcrumb, ['Admin', $c->uri_for("/admin")];
+                    push @breadcrumb, ['Delete News', $c->uri_for("/news/delete_news")];
+                }
+
+            }
+
+        }
+    }
+
+    if (scalar @breadcrumb <= 1) {
+        return '';
+    }
+
+    my $last = pop @breadcrumb;
+    @breadcrumb = map { "<a href=\"$_->[1]\">$_->[0]</a>" } @breadcrumb;
+    my $text = join ' &gt; ', (@breadcrumb, $last->[0]);
+
+
+    return $text;
+}
+
+sub auto : Private {
+    my ( $self, $c ) = @_;
+
+    # Generate breadcrumb
+    my $bc = $self->breadcrumb($c);
+    $c->stash->{breadcrumb} = $bc if $bc;
+    1;
+}
 
 =head2 index 
 
@@ -28,32 +97,26 @@ sub index : Private {
     $self->news_page($c);
 }
 
-sub news_detail : LocalRegex('^(\d+)$') {
+sub news_detail : LocalRegex('^(\d+)(\/\w+)?$') Form {
     my ( $self, $c) = @_;
-   
+
     my $news_id = $c->req->captures->[0];
 
     my $news = $c->model('joshissexyDB::News')->single({ news_id => $news_id});
     $c->stash->{news} = $news;
 
-    my $w = $self->make_comment_widget($c, $news_id);
-    $w->action($c->req->uri);
+    my $c_form = $self->formbuilder;
+    $c_form->action("/news/$news_id/post_comment");
 
-    my $result;
-    unless ($c->req->params->{ok}) {
-        $result = $w->result;
-    }
-    else {
-        $result = $w->process($c->req);
-
-        if($result->has_errors) {
+    if ($c_form->submitted) {
+        if(!$c_form->validate) {
             $c->stash->{error_msg} = 'Validation errors!';
         }
         else {
             # Insert the shiz
-            my $name    = $c->req->params->{name};
-            my $email   = $c->req->params->{email};
-            my $message = $c->req->params->{message};
+            my $name    = $c_form->field('name');
+            my $email   = $c_form->field('email');
+            my $message = $c_form->field('message');
             my $ip      = $c->req->address;
 
             $c->model('joshissexyDB::Comments')->create({
@@ -64,14 +127,19 @@ sub news_detail : LocalRegex('^(\d+)$') {
                     ip      => $ip
                 });
 
+            $c->stash->{form_submitted} = 1;
             $c->stash->{status_msg} = 'Comment created!';
         }
     }
 
-    $c->stash->{add_comment_form} = $result;
     $c->stash->{template} = 'news/news_detail.tt2';
 }
 
+=head2 news_page
+
+HTML for a specific news page
+
+=cut
 
 sub news_page : LocalRegex('^page\/(\d+)$') {
     my ($self, $c) = @_;
@@ -95,30 +163,9 @@ sub news_page : LocalRegex('^page\/(\d+)$') {
     $c->stash->{template} = 'index.tt2';
 }
 
-sub make_comment_widget {
-    my ( $self, $c, $news_id) = @_;
-
-
-    my $w = $c->widget('comment_form')->method('post');
-
-    $w->element('Hidden','news_id'  )->value($news_id);
-    $w->element('Textfield','name'  )->label('Name')->size(25);
-    $w->element('Textfield','email' )->label('Email')->size(25);
-    $w->element('Textarea','message')->label('Comment')->cols(50)->rows(6);
-    $w->element('Submit','ok')->value('Submit');
-
-    $w->constraint(All => qw/name message/)->message('Required');
-
-    for my $column (qw/name email message/) {
-        $w->filter( TrimEdges => $column );
-    }
-
-    return $w;
-}
-
 =head2 create_news
 
-HTML to create a new post
+HTML to create a new post.  Admin roles only
 
 =cut
 
@@ -150,7 +197,7 @@ sub create_news : Local {
 
 =head2 delete_news
 
-HTML to delete a news post
+HTML to delete a news post.  Admin roles only
 
 =cut
 
@@ -178,14 +225,6 @@ sub delete_news : Local {
 
     $c->stash->{template} = 'news/delete_news.tt2';
 }
-
-=pod
-#sub end : Private {
-#    my ($self, $c) = @_;
-#    $c->forward('joshissexy::View::TT');
-#}
-=cut
-
 
 =head1 AUTHOR
 
