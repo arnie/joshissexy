@@ -1,9 +1,9 @@
 ---
 name: joshissexy_test
 connect_info: 
-    # - 'dbi:PG:dbname=<dbname>'
-    # - 'username'
-    # - 'password'
+    #- 'dbi:Pg:dbname=<dbname>'
+    #- 'username'
+    #- 'passwodr'
 authentication:
     dbic:
         user_class:         joshissexyDB::Users
