@@ -28,11 +28,12 @@ body {
 }
 #navbar a,a:hover,a:link,a:visited {
 	color: #202020;
+	text-decoration: none;
 }
 
 #navbar ul,li {
 	margin: 0;
-	padding: 0 3px;
+	padding: 0 5px;
 	display: inline;
 	list-style-type: none;
 }
