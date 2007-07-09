@@ -10,6 +10,7 @@ __PACKAGE__->config({
         joshissexy->path_to( 'root', 'lib' )
     ],
     PRE_PROCESS  => 'config/main',
+    PLUGIN_BASE  => 'joshissexy::Template::Plugin',
     WRAPPER      => 'site/wrapper',
     ERROR        => 'error.tt2',
     TIMER        => 0,
