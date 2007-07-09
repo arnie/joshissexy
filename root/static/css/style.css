@@ -26,12 +26,16 @@ body {
 	color: #404040;
 	font: bold 1.4em Arial, Helvetica, sans-serif;
 }
-#navbar a,a:hover,a:link,a:visited {
+#navbar a,
+#navbar a:hover,
+#navbar a:link,
+#navbar a:visited {
 	color: #202020;
 	text-decoration: none;
 }
 
-#navbar ul,li {
+#navbar ul,
+#navbar li {
 	margin: 0;
 	padding: 0 5px;
 	display: inline;
@@ -85,7 +89,8 @@ body {
 	padding: 10px 0px 10px 0px;
 }
 
-#content h2,#content h3 {
+#content h2,
+#content h3 {
 	display: block;
 	font-size: 12pt;
 	font-weight: bold;
@@ -93,7 +98,8 @@ body {
 	margin-bottom: 0;
 }
 
-.news_post .date,.comment .date {
+.news_post .date,
+.comment .date {
 	color: #4d75cf;
 	font-size: 8pt;
 }
@@ -131,7 +137,8 @@ label .invalid_message {
     font-size: .8em;
 }
 
-label input, label select {
+label input, 
+label select {
 }
 
 .fields_with_errors > input{
