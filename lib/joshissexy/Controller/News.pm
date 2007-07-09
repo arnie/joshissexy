@@ -30,6 +30,8 @@ sub breadcrumb {
 
     my @breadcrumb;
 
+    # This can sometimes throw an error, we don't really care though
+    eval {
     while ( my $i = shift @t ) {
 
         if ($i eq 'news') {
@@ -65,6 +67,7 @@ sub breadcrumb {
 
         }
     }
+    };
 
     if (scalar @breadcrumb <= 1) {
         return '';
@@ -102,7 +105,9 @@ sub news_detail : LocalRegex('^(\d+)(\/\w+)?$') Form {
 
     my $news_id = $c->req->captures->[0];
 
-    my $news = $c->model('joshissexyDB::News')->single({ news_id => $news_id});
+    my $news = $c->model('joshissexyDB::News')->single({ news_id => $news_id})
+        or joshissexy::Exception::FileNotFound->throw('Could not find \'' . $c->req->uri . '\'');
+
     $c->stash->{news} = $news;
 
     my $c_form = $self->formbuilder;
@@ -145,18 +150,8 @@ sub news_page : LocalRegex('^page\/(\d+)$') {
     my ($self, $c) = @_;
     my $news_page = $c->req->captures->[0];
 
-    my $news = $c->model('joshissexyDB::News')->search(undef, { 
-        +select   => [ qw/me.news_id me.topic me.create_date me.message/,
-                    { count => 'comments.comments_id' }
-        ],
-        as       => [qw/news_id topic create_date message comments_count/],
-        join     => 'comments',
-        order_by => 'me.create_date DESC',
-        group_by => [qw/me.news_id me.topic me.create_date me.message /],
-
-        rows     => 4,
-        page     => $news_page || 1
-    });
+    my $news = $c->model('joshissexyDB::News')->news_with_comments_count($news_page)
+        or joshissexy::Exception::FileNotFound->throw("No news found!");
 
     $c->stash->{news_page} = $news->pager();
     $c->stash->{news} = [$news->all()];

@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Catalyst::Runtime '5.70';
+use joshissexy::Exceptions;
 
 # Set flags and add plugins for the application
 #
@@ -45,6 +46,68 @@ our $VERSION = '0.01';
 
 # Start the application
 __PACKAGE__->setup;
+
+sub finalize {
+    my ( $c ) = shift;
+    $c->handle_exception if @{ $c->error };
+    $c->NEXT::finalize( @_ );
+}
+
+sub handle_exception {
+    my( $c )  = @_;
+    my $error = $c->error->[ 0 ];
+
+    if( !Scalar::Util::blessed( $error ) or !$error->isa( 'joshissexy::Exception' ) ) {
+        $error = joshissexy::Exception->new( message => "$error" );
+    }
+
+    # handle debug-mode forced-debug from RenderView
+    if( $c->debug && $error->message =~ m{^forced debug} ) {
+        return;
+    }
+
+    $c->clear_errors;
+
+    if ( $error->is_error ) {
+        $c->response->headers->remove_content_headers;
+    }
+
+    if ( $error->has_headers ) {
+        $c->response->headers->merge( $error->headers );
+    }
+
+    # log the error
+    if ( $error->is_server_error ) {
+        $c->log->error( $error->as_string );
+    }
+    elsif ( $error->is_client_error ) {
+        $c->log->warn( $error->as_string ) if $error->status =~/^40[034]$/;
+    }
+
+    if( $error->is_redirect ) {
+        # recent Catalyst will give us a default body for redirects
+
+        if( $error->can( 'uri' ) ) {
+            $c->response->redirect( $error->uri( $c ) );
+        }
+
+        return;
+    }
+
+    $c->response->status( $error->status );
+    $c->response->content_type( 'text/html; charset=utf-8' );
+    $c->response->body(
+        $c->view( 'TT' )->render( $c, 'error.tt2', { error => $error } )
+    );
+
+    # processing the error has bombed. just send it back plainly.
+    $c->response->body( $error->as_public_html ) if $@;
+}
+
+$SIG{ __DIE__ } = sub {
+    return if Scalar::Util::blessed( $_[ 0 ] );
+    joshissexy::Exception->throw( message => join '', @_ );
+};
 
 
 =head1 NAME

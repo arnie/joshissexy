@@ -39,10 +39,7 @@ sub index : Public {
 sub default : Private {
     my ( $self, $c ) = @_;
 
-    # Hello World
-    #$c->response->body( $c->welcome_message);
-    $c->response->status(404);
-    $c->response->body("OMG! Page not found!");
+    joshissexy::Exception::FileNotFound->throw('Could not find \'' . $c->req->uri . '\'');
 }
 
 =head2 end
