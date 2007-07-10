@@ -1,0 +1,17 @@
+name: login_form
+method: post
+javascript: 0
+fields:
+    username:
+        label:    Username
+        type:     text
+        size:     25
+        required: 1
+        message:  Please supply a username
+    password:
+        label:    Password
+        type:     password
+        size:     25
+        required: 1
+        message:  Please supply a password
+submit: Submit

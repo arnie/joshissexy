@@ -1,9 +1,14 @@
 ---
 name: joshissexy_test
 connect_info: 
-    #- 'dbi:Pg:dbname=<dbname>'
-    #- 'username'
-    #- 'password'
+    - 'dbi:Pg:dbname=arnie01'
+    - 'arnie'
+    - 'strangE1'
+form:
+    method: post
+    stylesheet: 0
+    cookies: 0
+    javascript: 0
 authentication:
     dbic:
         user_class:         joshissexyDB::Users
