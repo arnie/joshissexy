@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use base 'Catalyst::Controller::FormBuilder';
 use Data::Dumper;
+use HTML::FromText;
 
 =head1 NAME
 
@@ -154,7 +155,20 @@ sub news_page : LocalRegex('^page\/(\d+)$') {
         or joshissexy::Exception::FileNotFound->throw("No news found!");
 
     $c->stash->{news_page} = $news->pager();
-    $c->stash->{news} = [$news->all()];
+    $news = [$news->all()];
+
+    for my $n ( @{ $news } ) {
+        $n->store_column( 
+            message => text2html($n->message, (
+                email => 1, 
+                lines => 1,
+                metachars => 0,
+                )
+            )
+        );
+    }
+
+    $c->stash->{news} = $news;
     $c->stash->{template} = 'index.tt2';
 }
 

@@ -2,7 +2,7 @@ package joshissexy::Controller::Admin;
 
 use strict;
 use warnings;
-use base 'Catalyst::Controller';
+use base 'Catalyst::Controller::FormBuilder';
 
 =head1 NAME
 
@@ -21,7 +21,7 @@ Catalyst Controller.
 
 =cut
 
-sub index : Private {
+sub index : Local Form('/admin/login') {
     my ( $self, $c ) = @_;
 
     if($c->check_user_roles('admin')) {
@@ -29,27 +29,22 @@ sub index : Private {
         return;
     }
 
+    my $form = $self->formbuilder;
+
     my $result;
-    my $username = $c->req->params->{username};
-    my $password = $c->req->params->{password};
+    my $username = $form->field('username');
+    my $password = $form->field('password');
 
-    my $w = $self->_make_login_widget($c);
-
-    if ($username or $password) {
-        if($c->login($username, $password)) {
+    if ($form->submitted and $form->validate) {
+        if ($c->login($username, $password)) {
             $c->flash->{status_msg} = "Welcome $username!";
             $c->response->redirect($c->uri_for('/admin/main'));
             return;
-        } 
-
-        $c->stash->{error_msg} = 'Bad username or password.';
-        $result = $w->process($c->req);
-    }
-    else {
-        $result = $w->result;
+        } else { 
+            $c->stash->{error_msg} = 'Bad username or password.';
+        }
     }
 
-    $c->stash->{login_form} = $result;
     $c->stash->{template} = 'admin/login.tt2';
 	
 }
@@ -80,25 +75,6 @@ sub logout : Local {
     $c->logout;
 
     $c->response->redirect($c->req->referer || '/');
-}
-
-sub _make_login_widget {
-    my ( $self, $c) = @_;
-
-    my $w = $c->widget('comment_form')->method('post');
-    $w->action($c->req->uri);
-    $w->element('Textfield','username')->label('Username')->size(25);
-    $w->element('Password','password' )->label('Password')->size(25);
-    $w->element('Submit','ok')->value('Submit');
-
-    $w->constraint(All => qw/name message/)->message('Required');
-
-    for my $column (qw/name email message/) {
-        $w->filter( TrimEdges => $column );
-    }
-
-    return $w;
-
 }
 
 

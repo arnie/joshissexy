@@ -26,7 +26,7 @@ sub news_with_comments_count : ResultSet {
         group_by => [qw/me.news_id me.topic me.create_date me.message /],
 
         rows     => $rows || 4,
-        page     => $news_page || 1
+        page     => $page || 1
     });
 }
 
