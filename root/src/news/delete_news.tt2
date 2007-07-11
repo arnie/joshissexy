@@ -1,9 +1,0 @@
-<ul>
-[% FOREACH n IN news_list -%]
-	<li>
-		<a href="[% Catalyst.uri_for('/news/delete_news/') _ n.news_id %]">x</a>
-		(comments)
-		<a href="[% Catalyst.uri_for('/news/') _ n.news_id %]">[% n.topic %]</a>
-	</li>
-[% END -%]
-</ul>

@@ -14,7 +14,7 @@
 <div id="content">
     <h1>[% template.title %]</h1>
     [% IF status_msg or Catalyst.flash.status_msg %]<span class="message">[% status_msg %]</span>[% END %]
-    [% IF error_msg or Catalyst.flash.error_msg %]<span class="error">[% error_msg %]</span>[% END %]
+    [% IF error_msg or Catalyst.flash.error_msg %]<span class="error">Error: [% error_msg %]</span>[% END %]
 [% content %]
 </div>
 

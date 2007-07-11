@@ -11,7 +11,7 @@ body {
 	width: 70%;
 	border: 1px solid black;
 	margin: 0 auto;
-	background-color: #EEE;
+	background-color: #EFEFEF;
 	padding: 15px;
 }
 
@@ -47,10 +47,24 @@ body {
     width: 70%;
 	border-left: 1px solid black;
 	border-right: 1px solid black;
+    border: 1px solid black;
 	margin: 0 auto;
-	padding: 2px 15px;
+	padding: 4px 50px;
+    height: 18px;
     background-color: #FFF;
-    font-size: .8em;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+a,
+a:hover,
+a:link,
+a:visited {
+    color: #003366;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
 }
 
 #header {
@@ -83,10 +97,12 @@ body {
 
 .error {
 	color: #F00;
+    font-weight: bold;
 }
 
 .message {
 	color: #00F;
+    font-weight: bold;
 }
 
 /* NEWS */

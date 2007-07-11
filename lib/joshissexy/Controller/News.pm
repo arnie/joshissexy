@@ -3,7 +3,6 @@ package joshissexy::Controller::News;
 use strict;
 use warnings;
 use base 'Catalyst::Controller::FormBuilder';
-use Data::Dumper;
 use HTML::FromText;
 
 =head1 NAME
@@ -55,14 +54,6 @@ sub breadcrumb {
                     push @breadcrumb, $directive if $directive;
 
                 }
-                elsif ($i eq 'create_news') {
-                    push @breadcrumb, ['Admin', $c->uri_for("/admin")];
-                    push @breadcrumb, ['Create News', $c->uri_for("/news/create_news")];
-                }
-                elsif ($i eq 'delete_news') {
-                    push @breadcrumb, ['Admin', $c->uri_for("/admin")];
-                    push @breadcrumb, ['Delete News', $c->uri_for("/news/delete_news")];
-                }
 
             }
 
@@ -70,16 +61,15 @@ sub breadcrumb {
     }
     };
 
-    if (scalar @breadcrumb <= 1) {
-        return '';
+    my $text;
+    if (scalar @breadcrumb > 1) {
+        my $last = pop @breadcrumb;
+        @breadcrumb = map { "<a href=\"$_->[1]\">$_->[0]</a>" } @breadcrumb;
+        $text = join ' &gt; ', (@breadcrumb, $last->[0]);
     }
 
-    my $last = pop @breadcrumb;
-    @breadcrumb = map { "<a href=\"$_->[1]\">$_->[0]</a>" } @breadcrumb;
-    my $text = join ' &gt; ', (@breadcrumb, $last->[0]);
 
-
-    return $text;
+    return $text || '~Love~';
 }
 
 sub auto : Private {
@@ -172,68 +162,6 @@ sub news_page : LocalRegex('^page\/(\d+)$') {
     $c->stash->{template} = 'index.tt2';
 }
 
-=head2 create_news
-
-HTML to create a new post.  Admin roles only
-
-=cut
-
-sub create_news : Local {
-
-    my ($self, $c) = @_;
-
-    if(!$c->check_user_roles('admin')) {
-        $c->response->redirect($c->uri_for('/admin'));
-        return;
-    }
-
-    if($c->request->params->{submit}) {
-
-        my $topic   = $c->request->params->{topic};
-        my $message = $c->request->params->{message};
-
-        my $news = $c->model('joshissexyDB::News')->create({
-            name    => 'arnie',
-            topic   => $topic,
-            message => $message,
-        });
-
-        $c->stash->{status_msg} = 'Creation of news successful!';
-    }
-
-    $c->stash->{template} = 'news/create_news.tt2';
-}
-
-=head2 delete_news
-
-HTML to delete a news post.  Admin roles only
-
-=cut
-
-sub delete_news : Local {
-    my ($self, $c, $news_id) = @_;
-
-
-    if(!$c->check_user_roles('admin')) {
-        $c->response->redirect($c->uri_for('/admin'));
-        return;
-    }
-
-    if($news_id) {
-        my $news = $c->model('joshissexyDB::News')->single({ news_id => $news_id});
-        $news->delete if $news;
-        if ($news) {
-            $c->stash->{status_msg} = 'News deleted successfully';
-        }
-        else {
-            $c->stash->{error_msg} = 'That news doesn\'t exist';
-        }
-    }
-
-    $c->stash->{news_list} = [$c->model('joshissexyDB::News')->all];
-
-    $c->stash->{template} = 'news/delete_news.tt2';
-}
 
 =head1 AUTHOR
 

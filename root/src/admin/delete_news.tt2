@@ -1,0 +1,10 @@
+<ul>
+[% FOREACH n IN news_list -%]
+	<li>
+		<a href="[% Catalyst.uri_for('/admin/news/delete_news/delete/') _ n.news_id %]">x</a>
+		([% n.get_column('comments_count') %] comments)
+		<a href="[% Catalyst.uri_for('/news/') _ n.news_id %]">[% n.topic %]</a>
+	</li>
+[% END -%]
+</ul>
+<p>[% INCLUDE general/pagination.tt2 page = news_page prefix = 'delete_news/page/' %]</p>

@@ -12,6 +12,7 @@ __PACKAGE__->load_classes({
 	joshissexyDB => [qw/
             News 
             Comments 
+            NewsCategory
 
             Users
             Roles

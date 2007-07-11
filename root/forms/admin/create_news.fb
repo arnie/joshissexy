@@ -1,0 +1,18 @@
+name: create_post
+method: post
+javascript: 0
+fields:
+    topic:
+        label:    Title
+        type:     text
+        size:     25
+        required: 1
+        message:  You must enter a title
+    message:
+        label:    Message
+        type:     textarea
+        cols:     100
+        rows:     10
+        required: 1
+        message:  Please enter a message
+submit: Submit
