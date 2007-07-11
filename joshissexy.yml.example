@@ -1,0 +1,26 @@
+---
+name: joshissexy_test
+connect_info: 
+    - 'dbi:Pg:dbname=DATABASE'
+    - 'USERNAME'
+    - 'PASSWORD'
+form:
+    method: post
+    stylesheet: 0
+    cookies: 0
+    javascript: 0
+authentication:
+    dbic:
+        user_class:         joshissexyDB::Users
+        user_field:         username
+        password_field:     password
+        password_type:      hashed
+        password_hash_type: SHA-1
+authorization:
+    dbic:
+        role_class:             joshissexyDB::Roles
+        role_field:             role
+        role_rel:               map_user_role
+        user_role_user_field:   user_id
+session:
+    storage:    /tmp/joshissexy_temp
