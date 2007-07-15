@@ -44,27 +44,31 @@ body {
 
 #breadcrumb {
 	text-align: left;
-    width: 70%;
+	width: 70%;
 	border-left: 1px solid black;
 	border-right: 1px solid black;
-    border: 1px solid black;
+	border: 1px solid black;
 	margin: 0 auto;
 	padding: 4px 50px;
-    height: 18px;
-    background-color: #FFF;
-    font-size: 1.1em;
-    font-weight: bold;
+	height: 18px;
+	background-color: #FFF;
+	font-size: 1.1em;
+	font-weight: bold;
 }
 a,
 a:hover,
 a:link,
 a:visited {
-    color: #003366;
-    text-decoration: none;
+	color: #003366;
+	text-decoration: none;
 }
 
 a:hover {
-    text-decoration: underline;
+	text-decoration: underline;
+}
+
+#container a:hover {
+	color: #F00;
 }
 
 #header {
@@ -81,8 +85,8 @@ a:hover {
 }
 #header h1.title a {
 	margin: 0;
-    color: #000;
-    text-decoration: none;
+	color: #000;
+	text-decoration: none;
 }
 
 #footer {
@@ -97,12 +101,12 @@ a:hover {
 
 .error {
 	color: #F00;
-    font-weight: bold;
+	font-weight: bold;
 }
 
 .message {
 	color: #00F;
-    font-weight: bold;
+	font-weight: bold;
 }
 
 /* NEWS */
@@ -146,16 +150,16 @@ label {
 	margin: .5em 0em;
 }
 label.required {
-    font-weight: bold;
+	font-weight: bold;
 }
 label.invalid {
-    font-weight: bold;
-    color: #f00;
+	font-weight: bold;
+	color: #f00;
 }
 label .invalid_message {
-    color: #000;
-    font-weight: normal;
-    font-size: .8em;
+	color: #000;
+	font-weight: normal;
+	font-size: .8em;
 }
 
 label input, 
