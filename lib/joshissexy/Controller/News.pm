@@ -96,11 +96,6 @@ sub news_detail : LocalRegex('^(\d+)(\/\w+)?$') Form {
 
     my $news_id = $c->req->captures->[0];
 
-    my $news = $c->model('joshissexyDB::News')->single({ news_id => $news_id})
-        or joshissexy::Exception::FileNotFound->throw('Could not find \'' . $c->req->uri . '\'');
-
-    $c->stash->{news} = $news;
-
     my $c_form = $self->formbuilder;
     $c_form->action("/news/$news_id/post_comment");
 
@@ -128,6 +123,11 @@ sub news_detail : LocalRegex('^(\d+)(\/\w+)?$') Form {
         }
     }
 
+    my $news = $c->model('joshissexyDB::News')->single({ news_id => $news_id})
+        or joshissexy::Exception::FileNotFound->throw('Could not find \'' . $c->req->uri . '\'');
+    $news->store_column( message => _filter_news($news->message) );
+
+    $c->stash->{news} = $news;
     $c->stash->{template} = 'news/news_detail.tt2';
 }
 
@@ -148,18 +148,22 @@ sub news_page : LocalRegex('^page\/(\d+)$') {
     $news = [$news->all()];
 
     for my $n ( @{ $news } ) {
-        $n->store_column( 
-            message => text2html($n->message, (
-                email => 1, 
-                lines => 1,
-                metachars => 0,
-                )
-            )
-        );
+        $n->store_column( message => _filter_news($n->message) );
     }
 
     $c->stash->{news} = $news;
     $c->stash->{template} = 'index.tt2';
+}
+
+# Filters news, for proper output on a page
+sub _filter_news {
+    my $message = shift;
+
+    return text2html($message, (
+        email => 1, 
+        lines => 1,
+        metachars => 0,
+        ));
 }
 
 
