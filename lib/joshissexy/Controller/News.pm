@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use base 'Catalyst::Controller::FormBuilder';
 use HTML::FromText;
+use joshissexy::XML::xkcd;
 
 =head1 NAME
 
@@ -88,6 +89,12 @@ sub auto : Private {
 sub index : Private {
     my ( $self, $c ) = @_;
 
+    $c->cache_page( '60' );
+
+    my $t = new joshissexy::XML::xkcd;
+    my $url = $t->get_latest_image_url();
+    $c->stash->{latest_xkcd_image} = $url;
+
     $self->news_page($c);
 }
 
@@ -123,6 +130,9 @@ sub news_detail : LocalRegex('^(\d+)(\/\w+)?$') Form {
         }
     }
 
+    $c->cache_page( '60' );
+
+
     my $news = $c->model('joshissexyDB::News')->single({ news_id => $news_id})
         or joshissexy::Exception::FileNotFound->throw('Could not find \'' . $c->req->uri . '\'');
     $news->store_column( message => _filter_news($news->message) );
@@ -139,6 +149,9 @@ HTML for a specific news page
 
 sub news_page : LocalRegex('^page\/(\d+)$') {
     my ($self, $c) = @_;
+
+    $c->cache_page( '60' );
+
     my $news_page = $c->req->captures->[0];
 
     my $news = $c->model('joshissexyDB::News')->news_with_comments_count($news_page)

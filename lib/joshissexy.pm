@@ -16,7 +16,6 @@ use joshissexy::Exceptions;
 #        StackTrace 
 
 use Catalyst qw/
-        -Debug 
         ConfigLoader 
         Static::Simple 
 
@@ -45,7 +44,7 @@ our $VERSION = '0.01';
 # See joshissexy.yml
 
 # Start the application
-__PACKAGE__->setup;
+__PACKAGE__->setup( qw/Cache::FileCache PageCache/ );
 
 sub finalize {
     my ( $c ) = shift;
