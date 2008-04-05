@@ -91,9 +91,22 @@ sub index : Private {
 
     $c->cache_page( '60' );
 
-    my $t = new joshissexy::XML::xkcd;
-    my $url = $t->get_latest_image_url();
-    $c->stash->{latest_xkcd_image} = $url;
+    # Get latest frontpage image
+    my $url = '';
+    my $rs = $c->model('FrontpageImages')->search(
+        undef,
+        {
+            select   => [qw/ url /],
+            order_by => [ 'create_date DESC' ],
+        }
+    )->slice(0, 0);
+
+    if ( my $row = $rs->first ) {
+        $c->stash->{latest_xkcd_image} = $row->url;
+    }
+
+#    my $t = new joshissexy::XML::xkcd;
+#    my $url = $t->get_latest_image_url();
 
     $self->news_page($c);
 }

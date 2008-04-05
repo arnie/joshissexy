@@ -17,6 +17,7 @@ __PACKAGE__->load_classes({
             Users
             Roles
             UserRoles
+            FrontpageImages
     /]
 });
 

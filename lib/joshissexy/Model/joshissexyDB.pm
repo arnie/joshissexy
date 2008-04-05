@@ -5,7 +5,7 @@ use base 'Catalyst::Model::DBIC::Schema';
 
 __PACKAGE__->config( 
     schema_class => 'joshissexyDB',
-    connect_info => delete joshissexy->config->{connect_info},
+    connect_info => joshissexy->config->{connect_info},
  );
 
 =head1 NAME
