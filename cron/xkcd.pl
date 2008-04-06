@@ -3,10 +3,13 @@
 use strict;
 use warnings;
 
-use joshissexy;
-use Data::Dumper;
+use YAML;
+use joshissexyDB;
+use joshissexy::XML::xkcd;
 
-my $schema = joshissexyDB->connect(@{ joshissexy->config->{connect_info} });
+my $config = YAML::LoadFile( '/home/joshissexy/joshissexy/joshissexy.yml' );
+
+my $schema = joshissexyDB->connect(@{ $config->{connect_info} });
 
 my $t = joshissexy::XML::xkcd->new;
 my $url = $t->get_latest_image_url();
@@ -25,7 +28,9 @@ if ( my $row = $rs->first ) {
 }
 
 if ($old_url ne $url) {
+    print "Inserting $url into FrontpageImages\n";
     $schema->resultset("FrontpageImages")->create({ 
         url => $url 
     });
 }
+print "Completed xkcd sync\n";
