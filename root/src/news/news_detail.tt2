@@ -1,5 +1,6 @@
 [% META title = 'News' %]
 [% USE date %]
+[% USE Filter.HTMLScrubber %]
 
 [% INCLUDE news/single_topic.tt2 news = news %]
 
@@ -19,7 +20,7 @@
     [%- END -%]
         </span>
         <span class="date">[% date.manip.UnixDate(comment.create_date, "%Y %b %d %i:%M%p") %]</span>
-        <p>[% comment.message %]</p>
+        <p>[% comment.message | html_scrubber %]</p>
     </div>
 [%- END %]
 

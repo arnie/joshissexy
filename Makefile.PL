@@ -13,6 +13,7 @@ requires 'CGI::FormBuilder';
 requires 'HTML::FromText';
 requires 'Catalyst::Controller::FormBuilder';
 requires 'YAML';
+requires 'Template::Plugin::Filter::HTMLScrubber';
 catalyst;
 
 install_script glob('script/*.pl');
