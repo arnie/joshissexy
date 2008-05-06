@@ -12,5 +12,8 @@ CREATE SEQUENCE frontpage_images_id_seq;
 CREATE TABLE frontpage_images (
     frontpage_images_id INTEGER PRIMARY KEY DEFAULT nextval('frontpage_images_id_seq'),
     url varchar(64) NOT NULL,
-    create_date timestamp NOT NULL DEFAULT 'now'::date
+    create_date timestamp NOT NULL DEFAULT 'now'
 );
+
+ALTER TABLE frontpage_images
+	ALTER create_date SET DEFAULT 'now'

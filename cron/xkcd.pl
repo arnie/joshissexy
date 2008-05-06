@@ -3,6 +3,8 @@
 use strict;
 use warnings;
 
+use lib '/home/joshissexy/joshissexy/lib';
+
 use YAML;
 use joshissexyDB;
 use joshissexy::XML::xkcd;
