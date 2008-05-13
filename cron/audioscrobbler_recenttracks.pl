@@ -29,25 +29,27 @@ if ( my $row = $rs->first ) {
 
 $scrobbler->last_modified( $last_date );
 my $tracks = $scrobbler->recent_tracks;
-while( my $track = pop @$tracks) {
-    my $d = $track->date;
-    $d->set_time_zone('local');
 
-    if (DateTime->compare( $last_date, $d ) < 0) {
-        print 'Adding "' 
-            . $track->artist->{name} . ' - '
-            . $track->name 
-            . '" to the database.' . "\n";
+if ($tracks) {
+        while( my $track = pop @$tracks) {
+            my $d = $track->date;
+            $d->set_time_zone('local');
 
-        $schema->resultset('LastFMTracks')->create({
-            artist          => $track->artist->{name},
-            artist_mbid     => $track->artist->{mbid},
-            name            => $track->name,
-            album           => $track->album->{name},
-            album_mbid      => $track->album->{mbid},
-            url             => $track->url,
-            date_listened   => $d,
-        });
-    }
+            if (DateTime->compare( $last_date, $d ) < 0) {
+                print 'Adding "' 
+                    . $track->artist->{name} . ' - '
+                    . $track->name 
+                    . '" to the database.' . "\n";
+
+                $schema->resultset('LastFMTracks')->create({
+                    artist          => $track->artist->{name},
+                    artist_mbid     => $track->artist->{mbid},
+                    name            => $track->name,
+                    album           => $track->album->{name},
+                    album_mbid      => $track->album->{mbid},
+                    url             => $track->url,
+                    date_listened   => $d,
+                });
+            }
+        }
 }
-

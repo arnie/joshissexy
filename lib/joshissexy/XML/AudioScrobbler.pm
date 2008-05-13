@@ -43,7 +43,8 @@ sub recent_tracks {
     my $res = $ua->get( $url, %headers );
 
     if ($res->code == 304) {
-        die "No changes dude\n";
+        print "Nothing to get, dude\n";
+        return;
     }
 
     if (! $res->is_success) {
