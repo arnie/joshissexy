@@ -8,6 +8,7 @@ use XML::Simple;
 use Data::Dumper;
 use joshissexy::XML::AudioScrobbler::Track;
 use DateTime;
+use DateTime::Format::HTTP;
 
 sub new {
     my ($class, %opt) = @_;
@@ -18,14 +19,32 @@ sub new {
     return bless $opt, $class;
 }
 
+sub last_modified {
+    my ($self, $last_modified) = @_;
+    $self->{last_modified} = $last_modified if $last_modified;
+    return $self->{last_modified};
+}
+
 sub recent_tracks {
     my ($self) = @_;
 
     my $url = 'http://ws.audioscrobbler.com/1.0/user/' 
         . $self->{user} . '/recenttracks.xml';
 
+    my %headers;
+
+    if ($self->last_modified) {
+        my $class = 'DateTime::Format::HTTP';
+        my $date = $class->format_datetime( $self->last_modified );
+        $headers{'If-Modified-Since'} = $date;
+    }
+
     my $ua = LWP::UserAgent->new;
-    my $res = $ua->get( $url );
+    my $res = $ua->get( $url, %headers );
+
+    if ($res->code == 304) {
+        die "No changes dude\n";
+    }
 
     if (! $res->is_success) {
         die "Couldn't get feed: " . $res->status_line;
@@ -60,7 +79,7 @@ sub recent_tracks {
         $track->url($url);
 
         my $date = $data->findnodes('./date', $context)->[0]->getAttribute('uts');
-        my $d = DateTime->from_epoch( epoch => $date );
+        my $d = DateTime->from_epoch( epoch => $date, time_zone => 'UTC' );
         $track->date( $d );
 
         push @ret_tracks, $track;

@@ -14,6 +14,7 @@ requires 'HTML::FromText';
 requires 'Catalyst::Controller::FormBuilder';
 requires 'YAML';
 requires 'Template::Plugin::Filter::HTMLScrubber';
+requires 'DateTime::Format::Pg';
 catalyst;
 
 install_script glob('script/*.pl');

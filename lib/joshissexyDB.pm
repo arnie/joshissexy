@@ -18,6 +18,7 @@ __PACKAGE__->load_classes({
             Roles
             UserRoles
             FrontpageImages
+            LastFMTracks
     /]
 });
 

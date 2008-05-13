@@ -15,5 +15,15 @@ CREATE TABLE frontpage_images (
     create_date timestamp NOT NULL DEFAULT 'now'
 );
 
-ALTER TABLE frontpage_images
-	ALTER create_date SET DEFAULT 'now'
+CREATE SEQUENCE lastfm_tracks_id_seq;
+CREATE TABLE lastfm_tracks (
+    last_fm_tracks_id INTEGER PRIMARY KEY DEFAULT nextval('lastfm_tracks_id_seq'),
+    artist varchar(128) NOT NULL,
+    artist_mbid varchar(37),
+    name varchar(128),
+    album varchar(128) NOT NULL,
+    album_mbid varchar(37),
+    url varchar(256),
+    date_listened timestamp,
+    create_date timestamp NOT NULL DEFAULT 'now'
+);
