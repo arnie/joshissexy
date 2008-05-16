@@ -1,10 +1,25 @@
+[% USE Filter.HTMLScrubber %]
+<form method="POST" action="[% Catalyst.uri_for('/admin/news/delete_comment/delete') %]">
 <ul>
 [% FOREACH n IN news_list -%]
 	<li>
 		<a href="[% Catalyst.uri_for('/admin/news/delete_news/delete/') _ n.news_id %]">x</a>
 		([% n.get_column('comments_count') %] comments)
 		<a href="[% Catalyst.uri_for('/news/') _ n.news_id %]">[% n.topic %]</a>
+        <ul>
+            [% FOREACH comment IN n.comments -%]
+                <li>
+                    <a href="[% Catalyst.uri_for('/admin/news/delete_comment/delete/' _ comment.comments_id) %]">
+                        x
+                    </a>
+                    <input type="checkbox" name="comment_id" value="[% comment.comments_id %]" />
+                    [% comment.message | html_scrubber %]
+                </li>
+            [% END %]
+        </ul>
 	</li>
 [% END -%]
 </ul>
+<input type="submit" value="Delete Comments" />
+</form>
 <p>[% INCLUDE general/pagination.tt2 page = news_page prefix = 'delete_news/page/' %]</p>

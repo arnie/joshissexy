@@ -190,7 +190,6 @@ sub delete_news : Local {
     $c->log->debug("news id: $news_id");
     $c->log->debug("page: $page");
 
-
     if($news_id) {
         my $news = $c->model('joshissexyDB::News')->search( news_id => $news_id)->single();
         #$news->delete if $news;
@@ -207,6 +206,44 @@ sub delete_news : Local {
     $c->stash->{news_list} = [$news->all()];
 
     $c->stash->{template} = 'admin/delete_news.tt2';
+}
+
+sub delete_comment: Local {
+    my ($self, $c) = @_;
+
+    my ($directive, $id) = @{ $c->req->args };
+
+    if ($directive eq 'delete' && $id) {
+        my $comment = $c->model('joshissexyDB::Comment')->search( comments_id => $id)->single();
+        $comment->delete if $comment;
+        if ($comment) {
+            $c->flash->{status_msg} = 'Comment deleted successfully!';
+        }
+        else {
+            $c->flash->{error_msg} = 'That comment doesn\'t exist';
+        }
+    }
+    elsif( $directive eq 'delete' ) {
+        my @ids = $c->req->param('comment_id');
+        my $success;
+        foreach my $id (@ids) {
+            my $comment = $c->model('joshissexyDB::Comment')->search( comments_id => $id)->single();
+            if ($comment) {
+                $comment->delete;
+                $success++;
+            }
+        }
+        if ($success) {
+            $c->flash->{status_msg} = 'Comments deleted successfully!';
+        }
+        else {
+            $c->flash->{error_msg} = 'Those comments doesn\'t exist';
+        }
+    }
+    else {
+            $c->flash->{error_msg} = 'No comments to delete';
+    }
+    $c->response->redirect($c->req->referer || '/');
 }
 
 =head1 AUTHOR

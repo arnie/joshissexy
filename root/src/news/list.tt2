@@ -5,6 +5,13 @@
 <br /><a href="http://www.xkcd.com">xkcd</a>
 [%- END -%]
 
+<div class="lastfm">
+<ul>
+    <li>test1</li>
+    <li>test2</li>
+</ul>
+</div>
+
 [% FOREACH n IN news -%]
     [% INCLUDE news/single_topic.tt2 news = n %]
     <span class="comments"><a href="[% Catalyst.uri_for('/news/') _ n.news_id %]">Comments([% n.get_column('comments_count') %])</a></span>
