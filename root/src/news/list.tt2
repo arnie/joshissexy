@@ -1,7 +1,6 @@
 [% META title='News' -%]
 
 <div>
-
 [% IF latest_xkcd_image -%]
 <div id="xkcd" style="float: right; clear: both;">
 <img src="[% latest_xkcd_image %]" alt="" style="margin: 5px;" border="0" />
@@ -9,6 +8,7 @@
 </div>
 [%- END -%]
 
+[% IF lastfm_tracks %]
 <div id="lastfm" style="clear: both;">
 	<h3>Last.fm Recent Music</h3>
 	<ul>
@@ -17,6 +17,7 @@
 	    [% END -%]
 	</ul>
 </div>
+[%- END -%]
 </div>
 
 [% FOREACH n IN news -%]
