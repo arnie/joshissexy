@@ -1,0 +1,204 @@
+body {
+	margin: 78px 0 10px 0;
+	background: #FFF url('/static/images/background.png') repeat-x top left;
+	font: 74% Arial, Sans-Serif;
+	text-align: center;
+}
+
+#container {
+	/*width: 750px;*/
+	text-align: left;
+	width: 70%;
+	border: 1px solid black;
+	margin: 0 auto;
+	background-color: #EFEFEF;
+	padding: 15px;
+}
+
+#navbar {
+	text-align: left;
+	width: 70%;
+	border: 1px solid black;
+	border-top: 7px solid black;
+	margin: 0 auto;
+	background-color: #b8b8b8;
+	padding: 5px 15px;
+	color: #404040;
+	font: bold 1.4em Arial, Helvetica, sans-serif;
+}
+#navbar a,
+#navbar a:hover,
+#navbar a:link,
+#navbar a:visited {
+	color: #202020;
+	text-decoration: none;
+}
+
+#navbar ul,
+#navbar li {
+	margin: 0;
+	padding: 0 5px;
+	display: inline;
+	list-style-type: none;
+}
+
+#breadcrumb {
+	text-align: left;
+	width: 70%;
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+	border: 1px solid black;
+	margin: 0 auto;
+	padding: 4px 50px;
+	height: 18px;
+	background-color: #FFF;
+	font-size: 1.1em;
+	font-weight: bold;
+}
+a,
+a:hover,
+a:link,
+a:visited {
+	color: #003366;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+#container a:hover {
+	color: #F00;
+}
+
+#header {
+	text-align: left;
+	width: 70%;
+	margin: 0 auto;
+	padding: 0 15px;
+	height: 35px;
+}
+
+#header h1.title {
+	margin: 0;
+	padding: 0;
+}
+#header h1.title a {
+	margin: 0;
+	color: #000;
+	text-decoration: none;
+}
+
+#footer {
+	border-top: 1px solid black;
+	text-align: center;
+	padding-top: 7px;
+	margin-top: 7px;
+	font-size: 8pt;
+}
+
+
+
+.error {
+	color: #F00;
+	font-weight: bold;
+}
+
+.message {
+	color: #00F;
+	font-weight: bold;
+}
+
+/* NEWS */
+.news_post {
+	padding: 10px 0px 10px 0px;
+}
+
+#content h2,
+#content h3 {
+	display: block;
+	font-size: 12pt;
+	font-weight: bold;
+	color: #e79910;
+	margin-bottom: 0;
+}
+
+.news_post .date,
+.comment .date {
+	color: #4d75cf;
+	font-size: 8pt;
+}
+
+.news_post .message {
+	color: #000;
+	display: block;
+}
+
+.comment {
+	padding: 10px;
+}
+
+.comment .name {
+	display: block;
+	font-size: 10pt;
+}
+
+
+/* FORM stuff */
+label {
+	display: block;
+	margin: .5em 0em;
+}
+label.required {
+	font-weight: bold;
+}
+label.invalid {
+	font-weight: bold;
+	color: #f00;
+}
+label .invalid_message {
+	color: #000;
+	font-weight: normal;
+	font-size: .8em;
+}
+
+label input, 
+label select {
+}
+
+.fields_with_errors > input{
+	background: #BCF;
+}
+
+.labels_with_errors textarea {
+	background: #BCF;
+
+}
+
+.submit {
+	display: block;
+	margin-top: 2em;;
+}
+
+#lastfm {
+    float: right;
+    border: 1px solid black;
+    padding: 5px;
+    background-color: #fff;
+}
+
+#lastfm ul, 
+#lastfm li
+{
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+#lastfm h3 {
+    color: #D01F3C;
+}
+
+.clearb {
+    clear: right;
+}
