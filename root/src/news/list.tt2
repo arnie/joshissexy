@@ -1,19 +1,26 @@
 [% META title='News' -%]
 
+<div>
+
 [% IF latest_xkcd_image -%]
+<div id="xkcd" style="float: right; clear: both;">
 <img src="[% latest_xkcd_image %]" alt="" style="margin: 5px;" border="0" />
 <br /><a href="http://www.xkcd.com">xkcd</a>
+</div>
 [%- END -%]
 
-<div class="lastfm">
-<ul>
-    <li>test1</li>
-    <li>test2</li>
-</ul>
+<div id="lastfm" style="clear: both;">
+	<h3>Last.fm Recent Music</h3>
+	<ul>
+	    [% FOREACH track IN lastfm_tracks %]
+	        <li><a href="[% track.url %]">[% track.artist %] - [% track.name %]</a></li>
+	    [% END -%]
+	</ul>
+</div>
 </div>
 
 [% FOREACH n IN news -%]
-    [% INCLUDE news/single_topic.tt2 news = n %]
-    <span class="comments"><a href="[% Catalyst.uri_for('/news/') _ n.news_id %]">Comments([% n.get_column('comments_count') %])</a></span>
+	[% INCLUDE news/single_topic.tt2 news = n %]
+	<span class="comments"><a href="[% Catalyst.uri_for('/news/') _ n.news_id %]">Comments([% n.get_column('comments_count') %])</a></span>
 [% END -%]
 <p>[% INCLUDE general/pagination.tt2 page = news_page prefix = 'page/' %]</p>

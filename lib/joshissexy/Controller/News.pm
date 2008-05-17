@@ -89,8 +89,6 @@ sub auto : Private {
 sub index : Private {
     my ( $self, $c ) = @_;
 
-    $c->cache_page( '60' );
-
     # Get latest frontpage image
     my $url = '';
     my $rs = $c->model('FrontpageImages')->search(
@@ -105,8 +103,15 @@ sub index : Private {
         $c->stash->{latest_xkcd_image} = $row->url;
     }
 
-#    my $t = new joshissexy::XML::xkcd;
-#    my $url = $t->get_latest_image_url();
+    $c->stash->{lastfm_tracks} = [
+        $c->model('LastFMTracks')->search(
+            undef,
+            {
+                order_by => [ 'date_listened DESC' ],
+                rows => 20,
+            }
+        )->all()
+    ];
 
     $self->news_page($c);
 }
@@ -143,12 +148,11 @@ sub news_detail : LocalRegex('^(\d+)(\/\w+)?$') Form {
         }
     }
 
-    $c->cache_page( '60' );
-
-
     my $news = $c->model('joshissexyDB::News')->single({ news_id => $news_id})
         or joshissexy::Exception::FileNotFound->throw('Could not find \'' . $c->req->uri . '\'');
     $news->store_column( message => _filter_news($news->message) );
+
+    $c->stash->{page_title} = $news->topic;
 
     $c->stash->{news} = $news;
     $c->stash->{template} = 'news/news_detail.tt2';
@@ -163,8 +167,6 @@ HTML for a specific news page
 sub news_page : LocalRegex('^page\/(\d+)$') {
     my ($self, $c) = @_;
 
-    $c->cache_page( '60' );
-
     my $news_page = $c->req->captures->[0];
 
     my $news = $c->model('joshissexyDB::News')->news_with_comments_count($news_page)
@@ -173,7 +175,7 @@ sub news_page : LocalRegex('^page\/(\d+)$') {
     $c->stash->{news_page} = $news->pager();
     $news = [$news->all()];
 
-    for my $n ( @{ $news } ) {
+    for my $n ( @$news ) {
         $n->store_column( message => _filter_news($n->message) );
     }
 

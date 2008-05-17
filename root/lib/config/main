@@ -13,7 +13,7 @@
    # define a data structure to hold sitewide data
    site = {
      title     => 'Joshissexy.com',
-     copyright => '2007 Josh',
+     copyright => '2006-2008 Josh',
    };
 
    # load up any other configuration items 

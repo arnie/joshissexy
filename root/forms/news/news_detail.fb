@@ -19,7 +19,12 @@ fields:
         cols:     50
         rows:     6
         required: 1
-
+    confirm:
+        label:    Type J here
+        type:     text
+        required: 1
+        message:  You didn't type J... are you a bot?
+        validate: /^J$/
 validate:
     name:  /^[a-zA-Z ]+$/
     email: EMAIL
