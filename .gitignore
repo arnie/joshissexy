@@ -1,2 +1,7 @@
 joshissexy.yml
-root/static
+root/static/files
+root/static/images
+root/static/movies
+root/static/scripts
+root/static/temp
+root/static/js/yui
